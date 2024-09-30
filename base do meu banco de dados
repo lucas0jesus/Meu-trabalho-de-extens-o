@@ -1,0 +1,47 @@
+
+CREATE DATABASE controle_gastos;
+
+
+\c controle_gastos;
+
+
+CREATE TABLE categorias (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(50) NOT NULL,
+    descricao TEXT
+);
+
+
+CREATE TABLE contas (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(50) NOT NULL,
+    tipo VARCHAR(20) NOT NULL,
+    saldo DECIMAL(10, 2) NOT NULL
+);
+
+
+CREATE TABLE transacoes (
+    id SERIAL PRIMARY KEY,
+    data DATE NOT NULL,
+    valor DECIMAL(10, 2) NOT NULL,
+    descricao TEXT,
+    categoria_id INT REFERENCES categorias(id),
+    conta_id INT REFERENCES contas(id)
+);
+
+
+INSERT INTO categorias (nome, descricao) VALUES
+('Alimentação', 'Gastos com alimentos e refeições'),
+('Transporte', 'Gastos com transporte público e combustível'),
+('Lazer', 'Gastos com atividades de lazer e entretenimento');
+
+
+INSERT INTO contas (nome, tipo, saldo) VALUES
+('Conta Corrente', 'Bancária', 1000.00),
+('Cartão de Crédito', 'Crédito', 500.00);
+
+
+INSERT INTO transacoes (data, valor, descricao, categoria_id, conta_id) VALUES
+('2024-09-01', 50.00, 'Compra de supermercado', 1, 1),
+('2024-09-02', 20.00, 'Passagem de ônibus', 2, 1),
+('2024-09-03', 100.00, 'Cinema', 3, 1);
